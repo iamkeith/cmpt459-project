@@ -6,7 +6,7 @@
 
 # This Python 3 environment comes with many helpful analytics libraries installed
 # It is defined by the kaggle/python docker image: https://github.com/kaggle/docker-python
-# For example, here's several helpful packages to load in 
+# For example, here's several helpful packages to load in
 
 import sys
 import numpy as np # linear algebra
@@ -37,7 +37,7 @@ train_df.head(10)
 test_df = pd.read_json("test.json")
 train_df.info()
 print("# of train rows : ", train_df.shape[0])
-print("# of test rows : ", train_df.shape[0])
+print("# of test rows : ", test_df.shape[0])
 
 
 # In[4]:
@@ -46,7 +46,7 @@ print("# of test rows : ", train_df.shape[0])
 # Plot histograms for the following numeric columns: Price, Latitude & Longitude
 # None of the histograms are very useful due to outliers
 
-sns.distplot(train_df['price'], kde = False)
+sns.distplot(train_df['price'], kde = false)
 
 
 # In[5]:
@@ -80,13 +80,125 @@ sns.countplot(train_df['interest_level'], order=['low','medium','high'])
 
 # In[9]:
 
-
 # !!!Find the number of missing values in each variable
+# bathrooms	bedrooms	building_id	created	description	display_address	features	latitude	listing_id	longitude	manager_id	photos	price	street_address	interest_level
 
-# number of null values in each variable
+latitude_count = 0
+longitude_count = 0
+price_count = 0
+bedroom_count = 0
+bathroom_count = 0
+building_id_count = 0
+created_count = 0
+display_address_count = 0
+description_count = 0
+features_count = 0;
+manager_id_count = 0
+photos_count = 0
+street_address_count = 0
+interest_level_count = 0
+listing_id_count = 0;
 
-print(train_df.isnull().sum())
+print ("TOTAL MISSING VALUES")
+for b in train_df['latitude']:
+    if b == 0:
+        latitude_count += 1
+        #print(b)
+print ("Latitude : ", latitude_count)
 
+for b in train_df['listing_id']:
+    if b == 0:
+        listing_id_count += 1
+        #print(b)
+print ("listing_id ", listing_id_count)
+
+# bedroom and bathroom can be zero!!! Have to fix these two
+for b in train_df['bedrooms']:
+    if b == 0 or isinstance(b, int) == False:
+        bedroom_count += 1
+        #print(b)
+print ("bedrooms", bedroom_count)
+
+for b in train_df['bathrooms']:
+    if b == 0 or isinstance(b, float) == False:
+        bathroom_count += 1
+        #print(b)
+print ("bathrooms", bathroom_count)
+#
+
+for b in train_df['longitude']:
+    if b == 0:
+        longitude_count += 1
+        #print(b)
+print ("longitude", longitude_count)
+
+for b in train_df['price']:
+    if b == 0:
+        price_count += 1
+        #print(b)
+print ("price", price_count)
+
+for b in train_df['building_id']:
+    if b == "":
+        building_id_count += 1
+        #print(b)
+print ("building_id", building_id_count)
+
+
+#length of date format is 19
+for b in train_df['created']:
+    if len(b) != 19:
+        created_count += 1
+        #print(b)
+print ("created", created_count)
+
+for b in train_df['description']:
+    if b == "" or b is None or len(b) < 4: # shows irrelevant data for len < 4
+        print(b)
+        description_count += 1
+        #print(b)
+print ("description", description_count)
+
+for b in train_df['display_address']:
+    if b == "" or len(b) < 3: # displays irrelevant value for len < 3
+        #print(b)
+        display_address_count += 1
+        #print(b)
+print ("display_address", display_address_count)
+
+for b in train_df['features']:
+    if b == "":
+        features_count += 1
+        #print(b)
+print ("features", features_count)
+
+for b in train_df['manager_id']:
+    if b == "" or b is None:
+        manager_id_count += 1
+        #print(b)
+print ("manager_id", manager_id_count)
+
+for b in train_df['photos']:
+    if b == "" or b is None:
+        photos_count += 1
+        #print(b)
+print ("photos", photos_count)
+
+for b in train_df['street_address']:
+    if b == "" or len(b) < 4: # Found garbage value "hi5"
+        #print(b)
+        street_address_count += 1
+        #print(b)
+print ("street_address", street_address_count)
+
+for b in train_df['interest_level']:
+    if b == "" or b is None:
+        interest_level_count += 1
+        #print(b)
+print ("interest_level", interest_level_count)
+
+#for b in train_df['features']:
+ #   print(b)
 
 # In[10]:
 
@@ -101,10 +213,10 @@ outliers = np.where(z>threshold)
 outliersRow = outliers[0]
 outliersCol = outliers[1]
 
-bedrooms_outliers = 0 
+bedrooms_outliers = 0
 bathrooms_outliers = 0
 latitude_outliers = 0
-longitude_outliers = 0 
+longitude_outliers = 0
 price_outliers = 0
 
 for val in outliersCol:
@@ -219,7 +331,7 @@ sns.distplot(train_df['longitude'], kde = False)
 #grayscale_feat_list = []
 #for filename in glob.glob('images_sample/*/*.jpg'):
 #    img = imread(filename, as_gray=True)
-#    imgFeature = np.reshape(img, (img.shape[0]*img.shape[1]))    
+#    imgFeature = np.reshape(img, (img.shape[0]*img.shape[1]))
 #    grayscale_feat_list.append(imgFeature)
 
 
@@ -271,7 +383,7 @@ for f in categorical:
 train_df.info()
 
 
-# 
+#
 
 # In[ ]:
 
